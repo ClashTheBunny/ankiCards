@@ -30,13 +30,13 @@ def buildDicts():
 
 	filename = 'pairs.txt'
 	f = codecs.open(filename, 'r', 'utf8')
-	bg_bgLines = f.readlines()
+	bg_bgLines = f.read().splitlines()
 
 	bg_bgEntries = bg_bgLines
 	bg_bg = {}
 	for entry in bg_bgEntries:
 		lines = entry.split(':')
-		bg_bg[lines[0]] = ''.join(lines[1:])
+                bg_bg[lines[0]] = lines[1]
 
 	#wikiFilename = "pairs.xml"
 	#tree = ElementTree()

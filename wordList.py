@@ -18,6 +18,7 @@ def makeFileFromText(text, filename):
     wordBoundry = re.compile('\W+',re.UNICODE)
 
     freqDict = {}
+    # TODO: Fix capitals for names
     for w in wordBoundry.split(text):
         w = w.lower()
         if freqDict.has_key(w):
@@ -34,12 +35,9 @@ def makeFileFromText(text, filename):
             try:
                 csvWriter.writerow([tup[0].encode('utf-8') , bg_en[tup[0]].encode('utf-8')] )
             except:
-                print tup[0].encode('utf-8')
+                csvWriter.writerow([tup[0].encode('utf-8') , "Unknown"])
 
-chapBoundry = re.compile(u'Глава \d+',re.UNICODE)
+chapBoundry = re.compile(u'Глава (\d+)',re.UNICODE)
 
-for chapter in chapBoundry.split(text):
-    print "chapter"
-    print chapter.encode('utf-8')
-    print "end chapter"
-    makeFileFromText(chapter, filename )
+for chapter in zip(chapBoundry.split(text)[1::2], chapBoundry.split(text)[2::2]):
+    makeFileFromText(chapter[1], filename + chapter[0] )
