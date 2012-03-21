@@ -1,6 +1,7 @@
 #!/bin/bash
 
 test -n "$(find . -maxdepth 1 -name 'bgwiktionary-*-pages-meta-current.xml' -print -quit)" || (wget http://dumps.wikimedia.org/bgwiktionary/latest/bgwiktionary-latest-pages-meta-current.xml.bz2 && bunzip2 bgwiktionary-latest-pages-meta-current.xml.bz2 )
+test -n "$(find . -maxdepth 1 -name 'enwiktionary-*-pages-meta-current.xml' -print -quit)" || (wget http://dumps.wikimedia.org/enwiktionary/latest/enwiktionary-latest-pages-meta-current.xml.bz2 && bunzip2 enwiktionary-latest-pages-meta-current.xml.bz2 )
 
 (
     echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"

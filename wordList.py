@@ -1,20 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import codecs
+
 #import string
 import re
 import bgdict
 import csv
+import os
 
 (bg_en, en_bg, bg_bg, ) = bgdict.buildDicts()
 
-dirname = ''
-filename = 'Jordan_Jovkov_-_Zhetvarjat-7865.txt'
-f = codecs.open(dirname + filename, 'r', 'utf-8')
-
-text = f.read()
-
-def makeFileFromText(text, filename):
+def makeFreqFromText(text, usedWords):
     wordBoundry = re.compile('\W+',re.UNICODE)
 
     freqDict = {}
@@ -25,7 +20,14 @@ def makeFileFromText(text, filename):
             freqDict[w] += 1
         else:
             freqDict[w] = 1
+    for common in list(set(usedWords).intersection(freqDict.keys())):
+        print common.encode('utf-8')
+        del freqDict[common]
+    return freqDict
 
+def createChapterFile(filename,freqDict):
+    if not os.path.isdir(os.path.dirname(filename)):
+        os.mkdir(os.path.dirname(filename))
     csvWriter = csv.writer(open(filename + '.csv', 'wb'))
 
     for tup in sorted(sorted(freqDict.items(), key=lambda x: x[0].encode('utf-8')), key=lambda x: x[1], reverse=True):
@@ -35,9 +37,7 @@ def makeFileFromText(text, filename):
             try:
                 csvWriter.writerow([tup[0].encode('utf-8') , bg_en[tup[0]].encode('utf-8')] )
             except:
-                csvWriter.writerow([tup[0].encode('utf-8') , "Unknown"])
-
-chapBoundry = re.compile(u'Глава (\d+)',re.UNICODE)
-
-for chapter in zip(chapBoundry.split(text)[1::2], chapBoundry.split(text)[2::2]):
-    makeFileFromText(chapter[1], filename + chapter[0] )
+                try:
+                    csvWriter.writerow([tup[0].encode('utf-8') , bg_en[tup[0].title()].encode('utf-8')] )
+                except:
+                    csvWriter.writerow([tup[0].encode('utf-8') , "Unknown"])
