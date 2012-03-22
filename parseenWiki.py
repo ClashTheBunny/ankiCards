@@ -6,6 +6,7 @@ import xml.etree.ElementTree
 import xml.dom.minidom
 import sys
 import re
+import pickle
 
 ipshell = IPShellEmbed()
 
@@ -18,10 +19,10 @@ read = False
 bulRE = re.compile("[bB]ulgarian", re.UNICODE)
 crylRE = re.compile("[\u0400-\u04FF\u0500-\u052F]", re.UNICODE)
 
-line = "nothing"
-
-while line != "":
+while 1:
     line = fh.readline()
+    if not line:
+        break
     if line == "  <page>\n":
         article = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"
         read = True
@@ -38,5 +39,11 @@ while line != "":
                 articles[title] = text
     if read:
         article += line
+
+enWiktBG = open("enWiktBG.pickle",'wb')
+
+pickle.dump(articles, enWiktBG)
+
+enWiktBG.close()
 
 print articles
