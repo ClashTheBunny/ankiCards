@@ -6,7 +6,7 @@ import xml.etree.ElementTree
 import xml.dom.minidom
 import sys
 import re
-import pickle
+import cPickle as pickle
 
 ipshell = IPShellEmbed()
 
@@ -42,7 +42,7 @@ while 1:
 
 enWiktBG = open("enWiktBG.pickle",'wb')
 
-pickle.dump(articles, enWiktBG)
+pickle.dump(articles, enWiktBG, pickle.HIGHEST_PROTOCOL)
 
 enWiktBG.close()
 
