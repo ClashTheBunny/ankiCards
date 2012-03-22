@@ -17,7 +17,7 @@ articles = {}
 read = False
 
 bulRE = re.compile("[bB]ulgarian", re.UNICODE)
-crylRE = re.compile("[\u0400-\u04FF\u0500-\u052F]", re.UNICODE)
+#crylRE = re.compile("[\u0400-\u04FF\u0500-\u052F]", re.UNICODE)
 
 while 1:
     line = fh.readline()
@@ -33,9 +33,9 @@ while 1:
         if len(root.getElementsByTagName("text")[0].childNodes) > 0:
             title = root.getElementsByTagName("title")[0].firstChild.data
             text = root.getElementsByTagName("text")[0].firstChild.data
-            if crylRE.search(title):
-                articles[title] = text
-            elif bulRE.search(text):
+            #if crylRE.search(title):
+            #    articles[title] = text
+            if bulRE.search(text):
                 articles[title] = text
     if read:
         article += line
