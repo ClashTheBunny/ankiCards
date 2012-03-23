@@ -7,6 +7,9 @@ import xml.dom.minidom
 import sys
 import re
 import cPickle as pickle
+from mwlib.uparser import parseString
+from mwlib.xhtmlwriter import MWXHTMLWriter
+import xml.etree.ElementTree as ET
 
 ipshell = IPShellEmbed()
 
@@ -20,6 +23,8 @@ bulRE = re.compile("[bB]ulgarian", re.UNICODE)
 #crylRE = re.compile("[\u0400-\u04FF\u0500-\u052F]", re.UNICODE)
 
 keep = False
+
+w = MWXHTMLWriter()
 
 while 1:
     line = fh.readline()
@@ -36,9 +41,10 @@ while 1:
             if len(root.getElementsByTagName("text")[0].childNodes) > 0:
                 title = root.getElementsByTagName("title")[0].firstChild.data
                 text = root.getElementsByTagName("text")[0].firstChild.data
+                p = parseString(title,text)
+                articles[title] = ET.tostring(w.write(p),encoding="utf-8",method="html")
                 #if crylRE.search(title):
                 #    articles[title] = text
-                articles[title] = text
         keep = False
     if read:
         if bulRE.search(line):
