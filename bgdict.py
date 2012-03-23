@@ -5,12 +5,14 @@ import codecs
 #from xml.etree.ElementTree import ElementTree
 #from xmlDict import XmlDictConfig
 from pprint import pprint
+import cPickle as pickle
 
 def buildDicts():
 	dirname = '/usr/share/bgoffice/'
 	filename = 'bg-en.dat'
 	f = codecs.open(dirname + filename, 'r', 'cp1251')
 	bg_enLines = f.read()
+        f.close()
 
 	bg_enEntries = bg_enLines.split('\x00')
 	bg_en = {}
@@ -21,6 +23,7 @@ def buildDicts():
 	filename = 'en-bg.dat'
 	f = codecs.open(dirname + filename, 'r', 'cp1251')
 	en_bgLines = f.read()
+        f.close()
 
 	en_bgEntries = en_bgLines.split('\x00')
 	en_bg = {}
@@ -31,6 +34,7 @@ def buildDicts():
 	filename = 'pairs.txt'
 	f = codecs.open(filename, 'r', 'utf8')
 	bg_bgLines = f.read().splitlines()
+        f.close()
 
 	bg_bgEntries = bg_bgLines
 	bg_bg = {}
@@ -38,19 +42,12 @@ def buildDicts():
 		lines = entry.split(':')
                 bg_bg[lines[0]] = lines[1]
 
-	#wikiFilename = "pairs.xml"
-	#tree = ElementTree()
-	#tree.parse(wikiFilename)
-	#root = tree.getroot()
-	#wikiDict = XmlDictConfig(root)
-	
-	#print "Parse Finished"
+	filename = 'enWiktBG.pickle'
+	f = open(filename, 'r')
+	enWikt = pickle.load(f)
+        f.close()
 
-	#pprint(wikiDict)
-
-	#print "PPrint Finished"
-
-	return (bg_en,en_bg,bg_bg,)
+	return (bg_en,en_bg,bg_bg,enWikt)
 #out = codecs.open(output, 'w', 'utf-8')
 #out.write(u)   # and now the contents have been output as UTF-8
 

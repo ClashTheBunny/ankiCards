@@ -7,7 +7,7 @@ import bgdict
 import csv
 import os
 
-(bg_en, en_bg, bg_bg, ) = bgdict.buildDicts()
+(bg_en, en_bg, bg_bg, enWikt) = bgdict.buildDicts()
 
 def makeFreqFromText(text, usedWords):
     wordBoundry = re.compile('\W+',re.UNICODE)
@@ -21,7 +21,7 @@ def makeFreqFromText(text, usedWords):
         else:
             freqDict[w] = 1
     for common in list(set(usedWords).intersection(freqDict.keys())):
-        print common.encode('utf-8')
+        #print common.encode('utf-8')
         del freqDict[common]
     return freqDict
 
@@ -32,12 +32,15 @@ def createChapterFile(filename,freqDict):
 
     for tup in sorted(sorted(freqDict.items(), key=lambda x: x[0].encode('utf-8')), key=lambda x: x[1], reverse=True):
         try:
-            csvWriter.writerow([tup[0].encode('utf-8') , bg_en[bg_bg[tup[0]]].encode('utf-8')] )
+            csvWriter.writerow([tup[0].encode('utf-8') , enWikt[tup[0]].encode('utf-8')] )
         except:
             try:
-                csvWriter.writerow([tup[0].encode('utf-8') , bg_en[tup[0]].encode('utf-8')] )
+                csvWriter.writerow([tup[0].encode('utf-8') , bg_en[bg_bg[tup[0]]].encode('utf-8')] )
             except:
                 try:
-                    csvWriter.writerow([tup[0].encode('utf-8') , bg_en[tup[0].title()].encode('utf-8')] )
+                    csvWriter.writerow([tup[0].encode('utf-8') , bg_en[tup[0]].encode('utf-8')] )
                 except:
-                    csvWriter.writerow([tup[0].encode('utf-8') , "Unknown"])
+                    try:
+                        csvWriter.writerow([tup[0].encode('utf-8') , bg_en[tup[0].title()].encode('utf-8')] )
+                    except:
+                        csvWriter.writerow([tup[0].encode('utf-8') , "Unknown"])
