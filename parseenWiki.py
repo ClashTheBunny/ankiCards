@@ -19,6 +19,8 @@ read = False
 bulRE = re.compile("[bB]ulgarian", re.UNICODE)
 #crylRE = re.compile("[\u0400-\u04FF\u0500-\u052F]", re.UNICODE)
 
+keep = False
+
 while 1:
     line = fh.readline()
     if not line:
@@ -27,17 +29,20 @@ while 1:
         article = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"
         read = True
     elif line == "  </page>\n":
-        article += line
         read = False
-        root = xml.dom.minidom.parseString(article)
-        if len(root.getElementsByTagName("text")[0].childNodes) > 0:
-            title = root.getElementsByTagName("title")[0].firstChild.data
-            text = root.getElementsByTagName("text")[0].firstChild.data
-            #if crylRE.search(title):
-            #    articles[title] = text
-            if bulRE.search(text):
+        if keep:
+            article += line
+            root = xml.dom.minidom.parseString(article)
+            if len(root.getElementsByTagName("text")[0].childNodes) > 0:
+                title = root.getElementsByTagName("title")[0].firstChild.data
+                text = root.getElementsByTagName("text")[0].firstChild.data
+                #if crylRE.search(title):
+                #    articles[title] = text
                 articles[title] = text
+        keep = False
     if read:
+        if bulRE.search(line):
+            keep = True
         article += line
 
 enWiktBG = open("enWiktBG.pickle",'wb')
@@ -45,5 +50,3 @@ enWiktBG = open("enWiktBG.pickle",'wb')
 pickle.dump(articles, enWiktBG, pickle.HIGHEST_PROTOCOL)
 
 enWiktBG.close()
-
-print articles
