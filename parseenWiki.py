@@ -18,17 +18,16 @@ fh = bz2.BZ2File("enwiktionary-latest-pages-meta-current.xml.bz2")
 
 articles = {}
 
-read = False
+debug = False
 
-bulRE = re.compile("[bB]ulgarian", re.UNICODE)
 #crylRE = re.compile("[\u0400-\u04FF\u0500-\u052F]", re.UNICODE)
+bulRE = re.compile("[bB]ulgarian", re.UNICODE)
 bulgarianSingle = re.compile("\* [bB]ulgarian", re.UNICODE)
 bulgarianSectionStart = re.compile("^==Bulgarian==$", re.UNICODE)
 bulgarianSectionEnd = re.compile("^==[A-Za-z]+==$", re.UNICODE)
 
 keep = False
-
-debug = True
+read = False
 
 w = MWXHTMLWriter()
 
