@@ -21,11 +21,13 @@ read = False
 
 bulRE = re.compile("[bB]ulgarian", re.UNICODE)
 #crylRE = re.compile("[\u0400-\u04FF\u0500-\u052F]", re.UNICODE)
-bulgarianSingle = re.compile("[bB]ulgarian", re.UNICODE)
+bulgarianSingle = re.compile("\* [bB]ulgarian", re.UNICODE)
 bulgarianSectionStart = re.compile("^==Bulgarian==$", re.UNICODE)
-bulgarianSectionEnd = re.compile("^==[a-z]+==$", re.UNICODE)
+bulgarianSectionEnd = re.compile("^==[A-Za-z]+==$", re.UNICODE)
 
 keep = False
+
+debug = True
 
 w = MWXHTMLWriter()
 
@@ -49,17 +51,16 @@ while 1:
                 Bulg = False
                 for line in text.split('\n'):
                     if bulgarianSectionEnd.search(line):
-                        if Bulg:
-                            print line
                         Bulg = False
                     if bulgarianSectionStart.search(line):
-                        print line
                         Bulg = True
                     if bulgarianSingle.search(line) and not Bulg:
                         newText += line
                     if Bulg == True:
                         newText += line
                 if newText is not "":
+                    if debug:
+                        print newText
                     p = parseString(title,newText)
                     articles[title] = ET.tostring(w.write(p),encoding="utf-8",method="html")
         keep = False
