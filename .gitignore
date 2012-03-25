@@ -1,8 +1,9 @@
 *.pyc
 Jordan_Jovkov_-_Zhetvarjat-7865.txt
 Jordan_Jovkov_-_Zhetvarjat-7865.txt.csv
-bgwiktionary-*-pages-meta-current.xml
-enwiktionary-*-pages-meta-current.xml
+bgwiktionary-*-pages-meta-current.xml.bz2
+enwiktionary-*-pages-meta-current.xml.bz2
+enWiktBG.pickle
 dict.list
 pairs.xml
 pairs.txt
