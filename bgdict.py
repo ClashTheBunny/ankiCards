@@ -6,6 +6,7 @@ import codecs
 #from xmlDict import XmlDictConfig
 from pprint import pprint
 import cPickle as pickle
+import bz2
 
 def buildDicts():
 	dirname = '/usr/share/bgoffice/'
@@ -31,8 +32,8 @@ def buildDicts():
 		lines = entry.split('\n')
 		en_bg[lines[0]] = '<br>'.join(lines[1:])
 
-	filename = 'pairs.txt'
-	f = codecs.open(filename, 'r', 'utf8')
+	filename = 'pairs.txt.bz2'
+	f = bz2.BZ2File(filename)
 	bg_bgLines = f.read().splitlines()
         f.close()
 
