@@ -62,7 +62,7 @@ while 1:
                     if debug:
                         print newText
                     p = parseString(title,newText)
-                    articles[title] = ET.tostring(w.write(p),encoding="utf-8",method="html")
+                    articles[title] = ''.join(ET.tostring(w.write(p),encoding="utf-8",method="html").split('\n'))
         keep = False
     if read:
         if bulRE.search(line):
