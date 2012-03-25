@@ -52,11 +52,11 @@ while 1:
                 for line in text.split('\n'):
                     if bulgarianSectionEnd.search(line):
                         Bulg = False
-                    if bulgarianSectionStart.search(line):
+                    elif bulgarianSectionStart.search(line):
                         Bulg = True
-                    if bulgarianSingle.search(line) and not Bulg:
-                        newText += line
                     if Bulg == True:
+                        newText += line
+                    elif bulgarianSingle.search(line):
                         newText += line
                 if newText is not "":
                     if debug:
