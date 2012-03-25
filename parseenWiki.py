@@ -55,9 +55,9 @@ while 1:
                     elif bulgarianSectionStart.search(line):
                         Bulg = True
                     if Bulg == True:
-                        newText += line
+                        newText += line + '\n'
                     elif bulgarianSingle.search(line):
-                        newText += line
+                        newText += line + '\n'
                 if newText is not "":
                     if debug:
                         print newText
