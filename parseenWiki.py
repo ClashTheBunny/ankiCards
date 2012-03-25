@@ -10,10 +10,11 @@ import cPickle as pickle
 from mwlib.uparser import parseString
 from mwlib.xhtmlwriter import MWXHTMLWriter
 import xml.etree.ElementTree as ET
+import bz2
 
 ipshell = IPShellEmbed()
 
-fh = open("enwiktionary-latest-pages-meta-current.xml")
+fh = bz2.BZ2File("enwiktionary-latest-pages-meta-current.xml.bz2")
 
 articles = {}
 
