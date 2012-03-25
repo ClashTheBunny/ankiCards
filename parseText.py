@@ -21,4 +21,4 @@ for chapter in zip(chapBoundry.split(text)[1::2], chapBoundry.split(text)[2::2])
     freqency = wordList.makeFreqFromText(chapter[1],allWords)
     # TODO: Fix capitals for names
     allWords = list(set(list(chain.from_iterable([ allWords, freqency.keys()]))))
-    wordList.createChapterFile(filename + chapter[0], freqency)
+    wordList.createChapterFile(filename + "{:02d}".format(int(chapter[0])), freqency)

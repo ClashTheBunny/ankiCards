@@ -21,6 +21,9 @@ read = False
 
 bulRE = re.compile("[bB]ulgarian", re.UNICODE)
 #crylRE = re.compile("[\u0400-\u04FF\u0500-\u052F]", re.UNICODE)
+bulgarianSingle = re.compile("[bB]ulgarian", re.UNICODE)
+bulgarianSectionStart = re.compile("^==Bulgarian==$", re.UNICODE)
+bulgarianSectionEnd = re.compile("^==[a-z]+==$", re.UNICODE)
 
 keep = False
 
@@ -41,10 +44,24 @@ while 1:
             if len(root.getElementsByTagName("text")[0].childNodes) > 0:
                 title = root.getElementsByTagName("title")[0].firstChild.data
                 text = root.getElementsByTagName("text")[0].firstChild.data
-                p = parseString(title,text)
-                articles[title] = ET.tostring(w.write(p),encoding="utf-8",method="html")
-                #if crylRE.search(title):
-                #    articles[title] = text
+                # massage text here.  This would be a good place to pull out only Bulgarian.
+                newText = ""
+                Bulg = False
+                for line in text.split('\n'):
+                    if bulgarianSectionEnd.search(line):
+                        if Bulg:
+                            print line
+                        Bulg = False
+                    if bulgarianSectionStart.search(line):
+                        print line
+                        Bulg = True
+                    if bulgarianSingle.search(line) and not Bulg:
+                        newText += line
+                    if Bulg == True:
+                        newText += line
+                if newText is not "":
+                    p = parseString(title,newText)
+                    articles[title] = ET.tostring(w.write(p),encoding="utf-8",method="html")
         keep = False
     if read:
         if bulRE.search(line):

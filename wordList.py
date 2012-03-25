@@ -31,16 +31,21 @@ def createChapterFile(filename,freqDict):
     csvWriter = csv.writer(open(filename + '.csv', 'wb'))
 
     for tup in sorted(sorted(freqDict.items(), key=lambda x: x[0].encode('utf-8')), key=lambda x: x[1], reverse=True):
+        key = tup[0].encode('utf-8')
+        value = lookupWord(tup[0])
+        csvWriter.writerow([key , value])
+
+def lookupWord(word):
+    try:
+        return enWikt[word].encode('utf-8')
+    except:
         try:
-            csvWriter.writerow([tup[0].encode('utf-8') , enWikt[tup[0]].encode('utf-8')] )
+            return bg_en[bg_bg[word]].encode('utf-8')
         except:
             try:
-                csvWriter.writerow([tup[0].encode('utf-8') , bg_en[bg_bg[tup[0]]].encode('utf-8')] )
+                return bg_en[word].encode('utf-8')
             except:
                 try:
-                    csvWriter.writerow([tup[0].encode('utf-8') , bg_en[tup[0]].encode('utf-8')] )
+                    return bg_en[word.title()].encode('utf-8')
                 except:
-                    try:
-                        csvWriter.writerow([tup[0].encode('utf-8') , bg_en[tup[0].title()].encode('utf-8')] )
-                    except:
-                        csvWriter.writerow([tup[0].encode('utf-8') , "Unknown"])
+                    return "Unknown"
