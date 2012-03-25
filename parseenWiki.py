@@ -46,21 +46,20 @@ while 1:
             if len(root.getElementsByTagName("text")[0].childNodes) > 0:
                 title = root.getElementsByTagName("title")[0].firstChild.data
                 text = root.getElementsByTagName("text")[0].firstChild.data
-                # massage text here.  This would be a good place to pull out only Bulgarian.
                 newText = ""
                 Bulg = False
                 for line in text.split('\n'):
-                    if bulgarianSectionEnd.search(line):
-                        Bulg = False
-                    elif bulgarianSectionStart.search(line):
+                    if bulgarianSectionStart.search(line):
                         Bulg = True
+                    elif bulgarianSectionEnd.search(line):
+                        Bulg = False
                     if Bulg == True:
                         newText += line + '\n'
                     elif bulgarianSingle.search(line):
                         newText += line + '\n'
                 if newText is not "":
                     if debug:
-                        print newText
+                        print newText.encode('utf-8')
                     p = parseString(title,newText)
                     articles[title] = ''.join(ET.tostring(w.write(p),encoding="utf-8",method="html").split('\n'))
         keep = False
