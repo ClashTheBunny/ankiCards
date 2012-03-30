@@ -1,6 +1,6 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
-from pprint import pprint
 from IPython.Shell import IPShellEmbed
 import xml.etree.ElementTree
 import xml.dom.minidom
@@ -46,30 +46,31 @@ while 1:
             if len(root.getElementsByTagName("text")[0].childNodes) > 0:
                 title = root.getElementsByTagName("title")[0].firstChild.data
                 text = root.getElementsByTagName("text")[0].firstChild.data
-                newText = ""
-                Bulg = False
-                for line in text.split('\n'):
-                    if bulgarianSectionStart.search(line):
-                        Bulg = True
-                    elif bulgarianSectionEnd.search(line):
-                        Bulg = False
-                    if Bulg == True:
-                        newText += line + '\n'
-                    elif bulgarianSingle.search(line):
-                        newText += line + '\n'
-                if newText is not "":
-                    if debug:
-                        print newText.encode('utf-8')
-                    p = parseString(title,newText)
-                    articles[title] = ''.join(ET.tostring(w.write(p),encoding="utf-8",method="html").split('\n'))
+#                newText = ""
+#                Bulg = False
+#                for line in text.split('\n'):
+#                    if bulgarianSectionStart.search(line):
+#                        Bulg = True
+#                    elif bulgarianSectionEnd.search(line):
+#                        Bulg = False
+#                    if Bulg == True:
+#                        newText += line + '\n'
+#                    elif bulgarianSingle.search(line):
+#                        newText += line + '\n'
+#                if newText is not "":
+#                    if debug:
+#                        print newText.encode('utf-8')
+                print text.encode('utf-8')
+                p = parseString(title,text)
+                articles[title] = ''.join(ET.tostring(w.write(p),encoding="utf-8",method="html").split('\n'))
         keep = False
     if read:
         if vizhRE.search(line):
             keep = True
         article += line
 
-enWiktBG = open("enWiktBG.pickle",'wb')
+bgWiktBG = open("bgWiktBG.pickle",'wb')
 
-pickle.dump(articles, enWiktBG, pickle.HIGHEST_PROTOCOL)
+pickle.dump(articles, bgWiktBG, pickle.HIGHEST_PROTOCOL)
 
-enWiktBG.close()
+bgWiktBG.close()

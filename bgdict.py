@@ -57,4 +57,5 @@ if __name__ == '__main__':
     from IPython.Shell import IPShellEmbed
     ipshell = IPShellEmbed()
     (bg_en,en_bg,bg_bg,enWikt) = buildDicts()
+
     ipshell()
