@@ -21,6 +21,7 @@ articles = {}
 debug = False
 
 vizhRE = re.compile("#виж", re.UNICODE)
+vizhCutRE = re.compile(".*#виж", re.UNICODE)
 #crylRE = re.compile("[\u0400-\u04FF\u0500-\u052F]", re.UNICODE)
 #bulgarianSingle = re.compile("\* [bB]ulgarian", re.UNICODE)
 #bulgarianSectionStart = re.compile("^==Bulgarian==$", re.UNICODE)
@@ -60,7 +61,7 @@ while 1:
 #                if newText is not "":
 #                    if debug:
 #                        print newText.encode('utf-8')
-                print text.encode('utf-8')
+                print text
                 p = parseString(title,text)
                 articles[title] = ''.join(ET.tostring(w.write(p),encoding="utf-8",method="html").split('\n'))
         keep = False
