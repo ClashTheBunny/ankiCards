@@ -6,10 +6,11 @@ import codecs
 #import string
 import re
 from itertools import chain
+import sys
 
-dirname = ''
-filename = './Jordan_Jovkov_-_Zhetvarjat-7865.txt'
-f = codecs.open(dirname + filename, 'r', 'utf-8')
+filename = sys.argv[1]
+
+f = codecs.open(filename, 'r', 'utf-8')
 
 text = f.read()
 

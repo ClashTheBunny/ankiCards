@@ -23,7 +23,7 @@ def buildDicts():
 		bg_en[lines[0]] = '<br>'.join(lines[1:])
 
 	filename = 'en-bg.dat'
-	f = codecs.open(dirname + filename, 'r', 'cp1251')
+	f = codecs.open(os.path.join(dirname, filename), 'r', 'cp1251')
 	en_bgLines = f.read()
         f.close()
 

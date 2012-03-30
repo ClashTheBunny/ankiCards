@@ -26,8 +26,9 @@ def makeFreqFromText(text, usedWords):
     return freqDict
 
 def createChapterFile(filename,freqDict):
-    if not os.path.isdir(os.path.dirname(filename)):
-        os.mkdir(os.path.dirname(filename))
+    if os.path.dirname(filename):
+        if not os.path.isdir(os.path.dirname(filename)):
+            os.mkdir(os.path.dirname(filename))
     csvWriter = csv.writer(open(filename + '.csv', 'wb'))
 
     for tup in sorted(sorted(freqDict.items(), key=lambda x: x[0].encode('utf-8')), key=lambda x: x[1], reverse=True):
