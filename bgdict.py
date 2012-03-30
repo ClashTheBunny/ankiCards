@@ -4,7 +4,6 @@
 import codecs
 #from xml.etree.ElementTree import ElementTree
 #from xmlDict import XmlDictConfig
-from pprint import pprint
 import cPickle as pickle
 import bz2
 import sys, os
@@ -55,4 +54,7 @@ def buildDicts():
 #out.write(u)   # and now the contents have been output as UTF-8
 
 if __name__ == '__main__':
-    pprint(buildDicts())
+    from IPython.Shell import IPShellEmbed
+    ipshell = IPShellEmbed()
+    (bg_en,en_bg,bg_bg,enWikt) = buildDicts()
+    ipshell()

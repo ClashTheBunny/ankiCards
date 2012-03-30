@@ -41,6 +41,7 @@ while 1:
     elif line == "  </page>\n":
         read = False
         if keep:
+            keep = False
             article += line
             root = xml.dom.minidom.parseString(article)
             if len(root.getElementsByTagName("text")[0].childNodes) > 0:
@@ -62,7 +63,6 @@ while 1:
                         print newText.encode('utf-8')
                     p = parseString(title,newText)
                     articles[title] = ''.join(ET.tostring(w.write(p),encoding="utf-8",method="html").split('\n'))
-        keep = False
     if read:
         if bulRE.search(line):
             keep = True
