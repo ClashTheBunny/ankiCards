@@ -3,7 +3,7 @@
 
 import wordList
 #import string
-import os
+import os, sys
 import zipfile
 import xml.dom.minidom
 from IPython.Shell import IPShellEmbed
@@ -13,7 +13,7 @@ from itertools import chain
 
 ipshell = IPShellEmbed()
 
-filename = "/home/rmason/CalibreLibrary/Dzhoan Roulingh/Khari Potr i filosofskiiat kamk (17193)/Khari Potr i filosofskiiat kamk - Dzhoan Roulingh.epub"
+filename = sys.argv[1]
 epub = zipfile.ZipFile(filename)
 
 metaDom = xml.dom.minidom.parseString(epub.open("META-INF/container.xml").read())

@@ -7,11 +7,12 @@ import codecs
 from pprint import pprint
 import cPickle as pickle
 import bz2
+import sys, os
 
 def buildDicts():
-	dirname = '/usr/share/bgoffice/'
+	dirname = '/usr/share/bgoffice'
 	filename = 'bg-en.dat'
-	f = codecs.open(dirname + filename, 'r', 'cp1251')
+	f = codecs.open(os.path.join(dirname, filename), 'r', 'cp1251')
 	bg_enLines = f.read()
         f.close()
 
@@ -32,8 +33,9 @@ def buildDicts():
 		lines = entry.split('\n')
 		en_bg[lines[0]] = '<br>'.join(lines[1:])
 
+        dirname = os.path.dirname(sys.argv[0])
 	filename = 'pairs.txt.bz2'
-	f = bz2.BZ2File(filename)
+	f = bz2.BZ2File(os.path.join(dirname, filename))
 	bg_bgLines = f.read().splitlines()
         f.close()
 
@@ -44,7 +46,7 @@ def buildDicts():
                 bg_bg[lines[0]] = lines[1]
 
 	filename = 'enWiktBG.pickle'
-	f = open(filename, 'r')
+	f = open(os.path.join(dirname, filename), 'r')
 	enWikt = pickle.load(f)
         f.close()
 
