@@ -18,7 +18,7 @@ fh = bz2.BZ2File("enwiktionary-latest-pages-meta-current.xml.bz2")
 
 articles = {}
 
-debug = False
+debug = True
 
 #crylRE = re.compile("[\u0400-\u04FF\u0500-\u052F]", re.UNICODE)
 bulRE = re.compile("[bB]ulgarian", re.UNICODE)

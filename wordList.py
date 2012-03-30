@@ -15,7 +15,9 @@ def makeFreqFromText(text, usedWords):
     freqDict = {}
     # TODO: Fix capitals for names
     for w in wordBoundry.split(text):
-        w = w.lower()
+        if w != w.lower():
+            # Detect real words that are capitals
+            w = w.lower()
         if freqDict.has_key(w):
             freqDict[w] += 1
         else:
@@ -38,7 +40,7 @@ def createChapterFile(filename,freqDict):
 
 def lookupWord(word):
     try:
-        return enWikt[word].encode('utf-8')
+        return enWikt[word]
     except:
         try:
             return bg_en[bg_bg[word]].encode('utf-8')
