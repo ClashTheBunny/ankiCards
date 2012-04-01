@@ -1,10 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from IPython.Shell import IPShellEmbed
 import xml.etree.ElementTree
 import xml.dom.minidom
-import sys
 import re
 import cPickle as pickle
 from mwlib.uparser import parseString
@@ -12,13 +10,15 @@ from mwlib.xhtmlwriter import MWXHTMLWriter
 import xml.etree.ElementTree as ET
 import bz2
 
-ipshell = IPShellEmbed()
 
 fh = bz2.BZ2File("bgwiktionary-latest-pages-meta-current.xml.bz2")
 
 articles = {}
 
 debug = False
+if debug:
+    from IPython.Shell import IPShellEmbed
+    ipshell = IPShellEmbed()
 
 vizhRE = re.compile("#виж", re.UNICODE)
 vizhCutRE = re.compile(".*#виж", re.UNICODE)

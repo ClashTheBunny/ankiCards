@@ -1,10 +1,7 @@
 #!/usr/bin/env python
 
-from pprint import pprint
-from IPython.Shell import IPShellEmbed
 import xml.etree.ElementTree
 import xml.dom.minidom
-import sys
 import re
 import cPickle as pickle
 from mwlib.uparser import parseString
@@ -12,15 +9,19 @@ from mwlib.xhtmlwriter import MWXHTMLWriter
 import xml.etree.ElementTree as ET
 import bz2
 
-ipshell = IPShellEmbed()
 
 fh = bz2.BZ2File("enwiktionary-latest-pages-meta-current.xml.bz2")
 
-articles = {}
+bg_en = {}
+en_bg = {}
 
-debug = True
+debug = False
 
-#crylRE = re.compile("[\u0400-\u04FF\u0500-\u052F]", re.UNICODE)
+if debug:
+    from IPython.Shell import IPShellEmbed
+    ipshell = IPShellEmbed()
+
+crylRE = re.compile("[\u0400-\u04FF\u0500-\u052F]", re.UNICODE)
 bulRE = re.compile("[bB]ulgarian", re.UNICODE)
 bulgarianSingle = re.compile("\* [bB]ulgarian", re.UNICODE)
 bulgarianSectionStart = re.compile("^==Bulgarian==$", re.UNICODE)
@@ -59,10 +60,15 @@ while 1:
                     elif bulgarianSingle.search(line):
                         newText += line + '\n'
                 if newText is not "":
-                    if debug:
-                        print newText.encode('utf-8')
                     p = parseString(title,newText)
-                    articles[title] = ''.join(ET.tostring(w.write(p),encoding="utf-8",method="html").split('\n'))
+                    if crylRE.search(title):
+                        if debug:
+                            print "bg_en = " + newText.encode('utf-8')
+                        bg_en[title] = ''.join(ET.tostring(w.write(p),encoding="utf-8",method="html").split('\n'))
+                    else:
+                        if debug:
+                            print "en_bg = " + newText.encode('utf-8')
+                        en_bg[title] = ''.join(ET.tostring(w.write(p),encoding="utf-8",method="html").split('\n'))
     if read:
         if bulRE.search(line):
             keep = True
@@ -70,6 +76,6 @@ while 1:
 
 enWiktBG = open("enWiktBG.pickle",'wb')
 
-pickle.dump(articles, enWiktBG, pickle.HIGHEST_PROTOCOL)
+pickle.dump((bg_en,en_bg), enWiktBG, pickle.HIGHEST_PROTOCOL)
 
 enWiktBG.close()
