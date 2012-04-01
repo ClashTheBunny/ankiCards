@@ -15,13 +15,14 @@ fh = bz2.BZ2File("bgwiktionary-latest-pages-meta-current.xml.bz2")
 
 articles = {}
 
-debug = False
+debug = True
 if debug:
     from IPython.Shell import IPShellEmbed
     ipshell = IPShellEmbed()
 
 vizhRE = re.compile("#виж", re.UNICODE)
-vizhCutRE = re.compile(".*#виж", re.UNICODE)
+# sed -e 's/<text xml:space="preserve">.*#виж \[\[\(.*\)\]\].*/<text xml:space="preserve">#виж [[\1]]/g'
+vizhCutRE = re.compile("#виж \[\[(.*)\]\]", re.UNICODE)
 #crylRE = re.compile("[\u0400-\u04FF\u0500-\u052F]", re.UNICODE)
 #bulgarianSingle = re.compile("\* [bB]ulgarian", re.UNICODE)
 #bulgarianSectionStart = re.compile("^==Bulgarian==$", re.UNICODE)
@@ -42,6 +43,7 @@ while 1:
     elif line == "  </page>\n":
         read = False
         if keep:
+            keep = False
             article += line
             root = xml.dom.minidom.parseString(article)
             if len(root.getElementsByTagName("text")[0].childNodes) > 0:
@@ -61,10 +63,8 @@ while 1:
 #                if newText is not "":
 #                    if debug:
 #                        print newText.encode('utf-8')
-                print text
-                p = parseString(title,text)
-                articles[title] = ''.join(ET.tostring(w.write(p),encoding="utf-8",method="html").split('\n'))
-        keep = False
+                if vizhCutRE.search(text.encode('utf-8')):
+                    articles[title] = vizhCutRE.search(text.encode('utf-8')).group(1).decode('utf-8')
     if read:
         if vizhRE.search(line):
             keep = True
