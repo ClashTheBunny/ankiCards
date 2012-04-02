@@ -7,21 +7,21 @@ import codecs
 import cPickle as pickle
 import bz2
 import sys, os
+import parseWikt
 
 def buildDicts():
     dirname = os.path.dirname(sys.argv[0])
-    filename = 'pairs.txt.bz2'
-    f = bz2.BZ2File(os.path.join(dirname, filename))
-    bg_bgLines = f.read().splitlines()
+
+    filename = 'bgWiktBG.pickle'
+    if not os.path.isfile(os.path.join(dirname, filename)):
+        parseWikt.parseBGwikt()
+    f = open(os.path.join(dirname, filename), 'r')
+    bg_bg = pickle.load(f)
     f.close()
 
-    bg_bgEntries = bg_bgLines
-    bg_bg = {}
-    for entry in bg_bgEntries:
-        lines = entry.split(':')
-        bg_bg[lines[0]] = lines[1]
-
     filename = 'enWiktBG.pickle'
+    if not os.path.isfile(os.path.join(dirname, filename)):
+        parseWikt.parseENwikt()
     f = open(os.path.join(dirname, filename), 'r')
     (bg_enWikt, en_bgWikt) = pickle.load(f)
     f.close()
