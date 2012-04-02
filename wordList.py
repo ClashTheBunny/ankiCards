@@ -7,7 +7,7 @@ import bgdict
 import csv
 import os
 
-(bg_en, en_bg, bg_bg, enWikt) = bgdict.buildDicts()
+(bg_en,en_bg,bg_bg,bg_enWikt, en_bgWikt) = bgdict.buildDicts()
 
 def makeFreqFromText(text, usedWords):
     wordBoundry = re.compile('\W+',re.UNICODE)
@@ -40,15 +40,21 @@ def createChapterFile(filename,freqDict):
 
 def lookupWord(word):
     try:
-        return enWikt[word]
+        return bg_enWikt[word]
     except:
+        print word + " not in bg_enWikt"
         try:
-            return bg_en[bg_bg[word]].encode('utf-8')
+            return bg_enWikt[bg_bg[word]]
         except:
+            print word + " not in bg_bg and bg_enWikt"
             try:
-                return bg_en[word].encode('utf-8')
+                return bg_en[bg_bg[word]].encode('utf-8')
             except:
+                print word + " not in bg_bg and bg_en"
                 try:
-                    return bg_en[word.title()].encode('utf-8')
+                    return bg_en[word].encode('utf-8')
                 except:
-                    return "Unknown"
+                    try:
+                        return bg_en[word.title()].encode('utf-8')
+                    except:
+                        return "Unknown"
