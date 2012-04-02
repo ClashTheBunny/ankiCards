@@ -9,7 +9,10 @@ from mwlib.uparser import parseString
 from mwlib.xhtmlwriter import MWXHTMLWriter
 import xml.etree.ElementTree as ET
 import bz2
+import wiktionaryGet
 
+
+wiktionaryGet.getWiktionaries(['bg'])
 
 fh = bz2.BZ2File("bgwiktionary-latest-pages-meta-current.xml.bz2")
 

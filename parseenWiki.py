@@ -8,8 +8,10 @@ from mwlib.uparser import parseString
 from mwlib.xhtmlwriter import MWXHTMLWriter
 import xml.etree.ElementTree as ET
 import bz2
+import wiktionaryGet
 
 
+wiktionaryGet.getWiktionaries(['en'])
 fh = bz2.BZ2File("enwiktionary-latest-pages-meta-current.xml.bz2")
 
 bg_en = {}
