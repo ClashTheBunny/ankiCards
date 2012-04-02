@@ -37,7 +37,11 @@ def buildDicts():
     for entry in bg_enEntries:
         lines = entry.split('\n')
         if not bg_enWikt.has_key(lines[0]):
+            print lines[0]
             bg_en[lines[0]] = '<br>'.join(lines[1:])
+        else:
+            print lines[0]
+    del bg_en['']
 
     filename = 'en-bg.dat'
     f = codecs.open(os.path.join(dirname, filename), 'r', 'cp1251')
@@ -58,6 +62,8 @@ def buildDicts():
 if __name__ == '__main__':
     from IPython.Shell import IPShellEmbed
     ipshell = IPShellEmbed()
-    (bg_en,en_bg,bg_bg,enWikt) = buildDicts()
+    (bg_en,en_bg,bg_bg,bg_enWikt, en_bgWikt) = buildDicts()
+    for mydict in (bg_en,en_bg,bg_bg,bg_enWikt, en_bgWikt):
+        print mydict.keys()[0:10]
 
     ipshell()

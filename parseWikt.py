@@ -71,7 +71,7 @@ def parseENwikt():
         from IPython.Shell import IPShellEmbed
         ipshell = IPShellEmbed()
     
-    crylRE = re.compile("[\u0400-\u04FF\u0500-\u052F]", re.UNICODE)
+    cyrlRE = re.compile(ur'[\u0400-\u04FF\u0500-\u052F]', re.UNICODE)
     bulRE = re.compile("[bB]ulgarian", re.UNICODE)
     bulgarianSingle = re.compile("\* [bB]ulgarian", re.UNICODE)
     bulgarianSectionStart = re.compile("^==Bulgarian==$", re.UNICODE)
@@ -111,13 +111,15 @@ def parseENwikt():
                             newText += line + '\n'
                     if newText is not "":
                         p = parseString(title,newText)
-                        if crylRE.search(title):
+                        if cyrlRE.search(title):
                             if debug:
                                 print "bg_en = " + newText.encode('utf-8')
+                                ipshell()
                             bg_en[title] = ''.join(ET.tostring(w.write(p),encoding="utf-8",method="html").split('\n'))
                         else:
                             if debug:
                                 print "en_bg = " + newText.encode('utf-8')
+                                ipshell()
                             en_bg[title] = ''.join(ET.tostring(w.write(p),encoding="utf-8",method="html").split('\n'))
         if read:
             if bulRE.search(line):
@@ -131,5 +133,5 @@ def parseENwikt():
     enWiktBG.close()
 
 if __name__ == '__main__':
-    parseBGwikt()
     parseENwikt()
+    parseBGwikt()
