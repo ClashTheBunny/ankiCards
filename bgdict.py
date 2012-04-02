@@ -5,7 +5,6 @@ import codecs
 #from xml.etree.ElementTree import ElementTree
 #from xmlDict import XmlDictConfig
 import cPickle as pickle
-import bz2
 import sys, os
 import parseWikt
 
@@ -37,10 +36,7 @@ def buildDicts():
     for entry in bg_enEntries:
         lines = entry.split('\n')
         if not bg_enWikt.has_key(lines[0]):
-            print lines[0]
             bg_en[lines[0]] = '<br>'.join(lines[1:])
-        else:
-            print lines[0]
     del bg_en['']
 
     filename = 'en-bg.dat'
