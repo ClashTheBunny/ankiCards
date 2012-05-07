@@ -6,4 +6,4 @@ and produces a CSV of word pairs for each chapter with the first word being
 the word in the book and the second word being the word's entry in a Bulgarian-
 English Dictionary.
 
-It currently requires python and mwlib.
+It currently requires python and mwlib.xhtml.
