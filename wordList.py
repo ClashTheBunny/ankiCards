@@ -39,22 +39,21 @@ def createChapterFile(filename,freqDict):
         csvWriter.writerow([key , value])
 
 def lookupWord(word):
-    try:
+    if bg_enWikt.has_key(word):
         return bg_enWikt[word]
-    except:
-        print word + " not in bg_enWikt"
-        try:
+    elif bg_bg.has_key(word):
+        if bg_enWikt.has_key(bg_bg[word]):
             return bg_enWikt[bg_bg[word]]
-        except:
-            print word + " not in bg_bg and bg_enWikt"
-            try:
-                return bg_en[bg_bg[word]].encode('utf-8')
-            except:
-                print word + " not in bg_bg and bg_en"
-                try:
-                    return bg_en[word].encode('utf-8')
-                except:
-                    try:
-                        return bg_en[word.title()].encode('utf-8')
-                    except:
-                        return "Unknown"
+    if bg_en.has_key(word):
+        return bg_en[word].encode('utf-8')
+    elif bg_bg.has_key(word):
+        if bg_en.has_key(bg_bg[word]):
+            return bg_en[bg_bg[word]].encode('utf-8')
+    word = word.title()
+    if bg_bg.has_key(word):
+        word = bg_bg[word]
+    if bg_enWikt.has_key(word):
+        return bg_enWikt[word]
+    if bg_en.has_key(word):
+        return bg_en[word].encode('utf-8')
+    return "Unknown"
