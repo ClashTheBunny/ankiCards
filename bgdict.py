@@ -12,14 +12,20 @@ def buildDicts():
     dirname = os.path.dirname(sys.argv[0])
 
     filename = 'bgWiktBG.pickle'
-    if not os.path.isfile(os.path.join(dirname, filename)):
+    wiktfile = 'bgwiktionary-latest-pages-meta-current.xml.bz2'
+    if ( not os.path.isfile(os.path.join(dirname, filename))
+        or ( os.path.getctime(os.path.join(dirname, filename)) <
+            os.path.getctime(os.path.join(dirname, wiktfile)) ) ):
         parseWikt.parseBGwikt()
     f = open(os.path.join(dirname, filename), 'r')
     bg_bg = pickle.load(f)
     f.close()
 
     filename = 'enWiktBG.pickle'
-    if not os.path.isfile(os.path.join(dirname, filename)):
+    wiktfile = 'enwiktionary-latest-pages-meta-current.xml.bz2'
+    if ( not os.path.isfile(os.path.join(dirname, filename))
+        or ( os.path.getctime(os.path.join(dirname, filename)) <
+            os.path.getctime(os.path.join(dirname, wiktfile)) ) ):
         parseWikt.parseENwikt()
     f = open(os.path.join(dirname, filename), 'r')
     (bg_enWikt, en_bgWikt) = pickle.load(f)

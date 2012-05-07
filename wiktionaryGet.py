@@ -27,6 +27,8 @@ def getWiktionaries(dicts):
                 if fileRE.search(line):
                     found = True
                     if not (md5(open(lang + "wiktionary-latest-pages-meta-current.xml.bz2",'rb').read()).hexdigest() == line.strip().split(" ")[0]):
+                        if os.isfile(lang + "WiktBG.pickle"):
+                            os.remove(lang + "WiktBG.pickle")
                         WikiBZ = open(lang + "wiktionary-latest-pages-meta-current.xml.bz2",'wb')
                         WikiBZ.write(urllib2.urlopen("http://dumps.wikimedia.org/" + lang + "wiktionary/latest/" + lang + "wiktionary-latest-pages-meta-current.xml.bz2").read())
                         WikiBZ.close()
@@ -35,6 +37,8 @@ def getWiktionaries(dicts):
             if not found:
                 print "problem with " + lang + "wiktionary-latest-md5sums.txt"
         else:
+            if os.isfile(lang + "WiktBG.pickle"):
+                os.remove(lang + "WiktBG.pickle")
             WikiBZ = open(lang + "wiktionary-latest-pages-meta-current.xml.bz2",'wb')
             WikiBZ.write(urllib2.urlopen("http://dumps.wikimedia.org/" + lang + "wiktionary/latest/" + lang + "wiktionary-latest-pages-meta-current.xml.bz2").read())
             WikiBZ.close()
