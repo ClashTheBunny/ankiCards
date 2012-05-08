@@ -18,7 +18,7 @@ def buildDicts():
             os.path.getctime(os.path.join(dirname, wiktfile)) ) ):
         parseWikt.parseBGwikt()
     f = open(os.path.join(dirname, filename), 'r')
-    bg_bg = pickle.load(f)
+    (bg_bg, bg_type, bg_types ) = pickle.load(f)
     f.close()
 
     filename = 'enWiktBG.pickle'
@@ -57,15 +57,15 @@ def buildDicts():
         if not en_bgWikt.has_key(lines[0]):
             en_bg[lines[0]] = '<br>'.join(lines[1:])
 
-    return (bg_en,en_bg,bg_bg,bg_enWikt, en_bgWikt)
+    return (bg_en,en_bg,bg_bg,bg_enWikt, en_bgWikt, bg_type, bg_types)
 #out = codecs.open(output, 'w', 'utf-8')
 #out.write(u)   # and now the contents have been output as UTF-8
 
 if __name__ == '__main__':
     from IPython.Shell import IPShellEmbed
     ipshell = IPShellEmbed()
-    (bg_en,en_bg,bg_bg,bg_enWikt, en_bgWikt) = buildDicts()
-    for mydict in (bg_en,en_bg,bg_bg,bg_enWikt, en_bgWikt):
+    dicts = buildDicts()
+    for mydict in dicts:
         print mydict.keys()[0:10]
 
     ipshell()

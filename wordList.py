@@ -7,7 +7,7 @@ import bgdict
 import csv
 import os
 
-(bg_en,en_bg,bg_bg,bg_enWikt, en_bgWikt) = bgdict.buildDicts()
+(bg_en,en_bg,bg_bg,bg_enWikt, en_bgWikt, bg_type, bg_types) = bgdict.buildDicts()
 
 def makeFreqFromText(text, usedWords):
     wordBoundry = re.compile('\W+',re.UNICODE)
@@ -56,4 +56,6 @@ def lookupWord(word):
         return bg_enWikt[word]
     if bg_en.has_key(word):
         return bg_en[word].encode('utf-8')
+    if bg_type.has_key(word):
+        return "Unknown word, word type: " + ", ".join([ x for x in bg_types[bg_type[word]] if x is not '']) + "(" + bg_type[word] + ")"
     return "Unknown"

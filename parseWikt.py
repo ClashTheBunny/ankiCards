@@ -17,6 +17,7 @@ def parseBGwikt():
     fh = bz2.BZ2File("bgwiktionary-latest-pages-meta-current.xml.bz2")
     
     articles = {}
+    types = {}
     
     debug = False
     if debug:
@@ -25,6 +26,9 @@ def parseBGwikt():
     
     vizhRE = re.compile("#виж", re.UNICODE)
     vizhCutRE = re.compile("#виж \[\[(.*)\]\]", re.UNICODE)
+    tipRE = re.compile("<title>Уикиречник:Български/Типове думи", re.UNICODE)
+    tipCutRE = re.compile("Уикиречник:Български/Типове думи/([0-9].*)", re.UNICODE)
+    linkCutRE = re.compile("\[\[(.*)\]\]", re.UNICODE)
     
     keep = False
     read = False
@@ -47,14 +51,43 @@ def parseBGwikt():
                     text = root.getElementsByTagName("text")[0].firstChild.data
                     if vizhCutRE.search(text.encode('utf-8')):
                         articles[title] = vizhCutRE.search(text.encode('utf-8')).group(1).decode('utf-8')
+                    elif tipCutRE.search(title.encode('utf-8')):
+                        articles[tipCutRE.search(title.encode('utf-8')).group(1).decode('utf-8')] = text
+                    elif title.encode('utf-8') == "Уикиречник:Български/Типове думи":
+                        findNumberLink = re.compile("\[\[/(.*?)/\]\]")
+                        for line in text.split('\n'):
+                            if line.startswith('== '):
+                                generalCategory = line[3:-3]
+                                subCategory = ''
+                                subSubCategory = ''
+                            if line.startswith('=== '):
+                                subCategory = line[4:-4]
+                                subSubCategory = ''
+                            if line.startswith('==== '):
+                                subSubCategory = line[5:-5]
+                            if line.startswith('['):
+                                print line
+                                for number in findNumberLink.finditer(line):
+                                    types[number.group(1)] = (generalCategory, subCategory, subSubCategory, )
+
         if read:
-            if vizhRE.search(line):
+            if vizhRE.search(line) or tipRE.search(line):
                 keep = True
             article += line
-    
+
+    wordLists = sorted([ key for key in articles.keys() if key.startswith(tuple([str(x) for x in range(0,10)])) ])
+
+    wordType = {}
+
+    for wordList in wordLists:
+        generalType = wordList[:wordList.find("/")]
+        for line in articles[wordList].split("\n"):
+            if line.startswith("["):
+                wordType[linkCutRE.search(line.encode('utf-8')).group(1).decode('utf-8')] = generalType
+
     bgWiktBG = open("bgWiktBG.pickle",'wb')
     
-    pickle.dump(articles, bgWiktBG, pickle.HIGHEST_PROTOCOL)
+    pickle.dump((articles, wordType, types), bgWiktBG, pickle.HIGHEST_PROTOCOL)
     
     bgWiktBG.close()
 
@@ -133,5 +166,5 @@ def parseENwikt():
     enWiktBG.close()
 
 if __name__ == '__main__':
-    parseENwikt()
+    #parseENwikt()
     parseBGwikt()
