@@ -16,7 +16,7 @@ text = f.read()
 
 chapBoundry = re.compile(u'Глава (\d+)',re.UNICODE)
 
-allWords = []
+allWords = ['',]
 
 for chapter in zip(chapBoundry.split(text)[1::2], chapBoundry.split(text)[2::2]):
     freqency = wordList.makeFreqFromText(chapter[1],allWords)

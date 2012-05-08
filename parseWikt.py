@@ -66,7 +66,6 @@ def parseBGwikt():
                             if line.startswith('==== '):
                                 subSubCategory = line[5:-5]
                             if line.startswith('['):
-                                print line
                                 for number in findNumberLink.finditer(line):
                                     types[number.group(1)] = (generalCategory, subCategory, subSubCategory, )
 
@@ -80,7 +79,11 @@ def parseBGwikt():
     wordType = {}
 
     for wordList in wordLists:
-        generalType = wordList[:wordList.find("/")]
+        if wordList.count("/") > 0:
+            generalType = wordList[:wordList.index["/"]]
+            print generalType
+        else:
+            generalType = wordList
         for line in articles[wordList].split("\n"):
             if line.startswith("["):
                 wordType[linkCutRE.search(line.encode('utf-8')).group(1).decode('utf-8')] = generalType

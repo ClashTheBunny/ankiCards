@@ -49,13 +49,21 @@ def lookupWord(word):
     elif bg_bg.has_key(word):
         if bg_en.has_key(bg_bg[word]):
             return bg_en[bg_bg[word]].encode('utf-8')
-    word = word.title()
-    if bg_bg.has_key(word):
-        word = bg_bg[word]
-    if bg_enWikt.has_key(word):
-        return bg_enWikt[word]
-    if bg_en.has_key(word):
-        return bg_en[word].encode('utf-8')
+    tword = word.title()
+    if bg_bg.has_key(tword):
+        word = bg_bg[tword]
+    if bg_enWikt.has_key(tword):
+        return bg_enWikt[tword]
+    if bg_en.has_key(tword):
+        return bg_en[tword].encode('utf-8')
+    if bg_type.has_key(tword):
+        result = u'Unknown word, word type: '
+        result += u', '.join([ x for x in bg_types[bg_type[tword]] if x is not ''])
+        result += u' (' + bg_type[tword] + u')'
+        return result.encode('utf-8')
     if bg_type.has_key(word):
-        return "Unknown word, word type: " + ", ".join([ x for x in bg_types[bg_type[word]] if x is not '']) + "(" + bg_type[word] + ")"
+        result = u'Unknown word, word type: '
+        result += u', '.join([ x for x in bg_types[bg_type[word]] if x is not ''])
+        result += u' (' + bg_type[word] + u')'
+        return result.encode('utf-8')
     return "Unknown"
