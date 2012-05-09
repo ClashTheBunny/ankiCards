@@ -2,8 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import codecs
-#from xml.etree.ElementTree import ElementTree
-#from xmlDict import XmlDictConfig
 import cPickle as pickle
 import sys, os
 import parseWikt
@@ -59,8 +57,6 @@ def buildDicts():
             en_bg[lines[0]] = '<br>'.join(lines[1:])
 
     return (bg_en,en_bg,bg_bg,bg_enWikt, en_bgWikt, bg_type, bg_types)
-#out = codecs.open(output, 'w', 'utf-8')
-#out.write(u)   # and now the contents have been output as UTF-8
 
 if __name__ == '__main__':
     try:
