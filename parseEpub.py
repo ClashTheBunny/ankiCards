@@ -6,12 +6,19 @@ import wordList
 import os, sys
 import zipfile
 import xml.dom.minidom
-from IPython.Shell import IPShellEmbed
 import BeautifulSoup
 from pprint import pprint
 from itertools import chain
 
-ipshell = IPShellEmbed()
+debug = False
+
+if debug:
+    try:
+        from IPython.Shell import IPShellEmbed
+        ipshell = IPShellEmbed()
+    except:
+        from IPython import embed
+        ipshell = embed()
 
 filename = sys.argv[1]
 epub = zipfile.ZipFile(filename)

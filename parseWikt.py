@@ -19,10 +19,14 @@ def parseBGwikt():
     articles = {}
     types = {}
     
-    debug = False
+    debug = True
     if debug:
-        from IPython.Shell import IPShellEmbed
-        ipshell = IPShellEmbed()
+        try:
+            from IPython.Shell import IPShellEmbed
+            ipshell = IPShellEmbed()
+        except:
+            from IPython import embed
+            ipshell = embed()
     
     vizhRE = re.compile("#виж", re.UNICODE)
     vizhCutRE = re.compile("#виж \[\[(.*)\]\]", re.UNICODE)
@@ -80,8 +84,7 @@ def parseBGwikt():
 
     for wordList in wordLists:
         if wordList.count("/") > 0:
-            generalType = wordList[:wordList.index["/"]]
-            print generalType
+            generalType = wordList[:wordList.index("/")]
         else:
             generalType = wordList
         for line in articles[wordList].split("\n"):
@@ -104,8 +107,12 @@ def parseENwikt():
     debug = False
     
     if debug:
-        from IPython.Shell import IPShellEmbed
-        ipshell = IPShellEmbed()
+        try:
+            from IPython.Shell import IPShellEmbed
+            ipshell = IPShellEmbed()
+        except:
+            from IPython import embed
+            ipshell = embed()
     
     cyrlRE = re.compile(ur'[\u0400-\u04FF\u0500-\u052F]', re.UNICODE)
     bulRE = re.compile("[bB]ulgarian", re.UNICODE)

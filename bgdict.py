@@ -62,8 +62,12 @@ def buildDicts():
 #out.write(u)   # and now the contents have been output as UTF-8
 
 if __name__ == '__main__':
-    from IPython.Shell import IPShellEmbed
-    ipshell = IPShellEmbed()
+    try:
+        from IPython.Shell import IPShellEmbed
+        ipshell = IPShellEmbed()
+    except:
+        from IPython import embed
+        ipshell = embed
     dicts = buildDicts()
     for mydict in dicts:
         print mydict.keys()[0:10]
