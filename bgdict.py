@@ -7,27 +7,28 @@ import codecs
 import cPickle as pickle
 import sys, os
 import parseWikt
+import bz2
 
 def buildDicts():
     dirname = os.path.dirname(sys.argv[0])
 
-    filename = 'bgWiktBG.pickle'
+    filename = 'bgWiktBG.pickle.bz2'
     wiktfile = 'bgwiktionary-latest-pages-meta-current.xml.bz2'
     if ( not os.path.isfile(os.path.join(dirname, filename))
         or ( os.path.getctime(os.path.join(dirname, filename)) <
             os.path.getctime(os.path.join(dirname, wiktfile)) ) ):
         parseWikt.parseBGwikt()
-    f = open(os.path.join(dirname, filename), 'r')
+    f = bz2.BZ2File(os.path.join(dirname, filename), 'rb')
     (bg_bg, bg_type, bg_types ) = pickle.load(f)
     f.close()
 
-    filename = 'enWiktBG.pickle'
+    filename = 'enWiktBG.pickle.bz2'
     wiktfile = 'enwiktionary-latest-pages-meta-current.xml.bz2'
     if ( not os.path.isfile(os.path.join(dirname, filename))
         or ( os.path.getctime(os.path.join(dirname, filename)) <
             os.path.getctime(os.path.join(dirname, wiktfile)) ) ):
         parseWikt.parseENwikt()
-    f = open(os.path.join(dirname, filename), 'r')
+    f = bz2.BZ2File(os.path.join(dirname, filename), 'rb')
     (bg_enWikt, en_bgWikt) = pickle.load(f)
     f.close()
 

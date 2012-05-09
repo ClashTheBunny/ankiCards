@@ -91,7 +91,7 @@ def parseBGwikt():
             if line.startswith("["):
                 wordType[linkCutRE.search(line.encode('utf-8')).group(1).decode('utf-8')] = generalType
 
-    bgWiktBG = open("bgWiktBG.pickle",'wb')
+    bgWiktBG = bz2.BZ2File("bgWiktBG.pickle.bz2",'wb')
     
     pickle.dump((articles, wordType, types), bgWiktBG, pickle.HIGHEST_PROTOCOL)
     
@@ -169,7 +169,7 @@ def parseENwikt():
                 keep = True
             article += line
     
-    enWiktBG = open("enWiktBG.pickle",'wb')
+    enWiktBG = bz2.BZ2File("enWiktBG.pickle.bz2",'wb')
     
     pickle.dump((bg_en,en_bg), enWiktBG, pickle.HIGHEST_PROTOCOL)
     
