@@ -18,7 +18,7 @@ if debug:
         ipshell = IPShellEmbed()
     except:
         from IPython import embed
-        ipshell = embed()
+        ipshell = embed
 
 filename = sys.argv[1]
 epub = zipfile.ZipFile(filename)

@@ -26,7 +26,7 @@ def parseBGwikt():
             ipshell = IPShellEmbed()
         except:
             from IPython import embed
-            ipshell = embed()
+            ipshell = embed
     
     vizhRE = re.compile("#виж", re.UNICODE)
     vizhCutRE = re.compile("#виж \[\[(.*)\]\]", re.UNICODE)
@@ -112,7 +112,7 @@ def parseENwikt():
             ipshell = IPShellEmbed()
         except:
             from IPython import embed
-            ipshell = embed()
+            ipshell = embed
     
     cyrlRE = re.compile(ur'[\u0400-\u04FF\u0500-\u052F]', re.UNICODE)
     bulRE = re.compile("[bB]ulgarian", re.UNICODE)
