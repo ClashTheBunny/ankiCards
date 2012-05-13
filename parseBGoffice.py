@@ -7,6 +7,7 @@ import re
 def parse(dat):
     endingsRE = re.compile("^Окончания:$")
     formiRE = re.compile("^Форми:$")
+    testRE = re.compile("^Тест:$")
     blankRE = re.compile("^$")
     desc = ( os.path.split(dat)[0], u'description.dat')
     datfh = open(dat, 'rb')
@@ -18,11 +19,12 @@ def parse(dat):
         for line in fh.readlines():
             if formiRE.match(line) or endingsRE.match(line):
                 reading = True
+                blank = 0
             if blankRE.match(line):
                 blank += 1
             else:
                 blank = 0
-            if blank > 1:
+            if blank > 1 or testRE.match(line):
                 reading = False
             if reading:
                 attrList.append(line.strip())
