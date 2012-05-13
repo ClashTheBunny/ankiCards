@@ -90,6 +90,7 @@ def parseBGwikt():
         for line in articles[wordList].split("\n"):
             if line.startswith("["):
                 wordType[linkCutRE.search(line.encode('utf-8')).group(1).decode('utf-8')] = generalType
+        del articles[wordList]
 
     bgWiktBG = bz2.BZ2File("bgWiktBG.pickle.bz2",'wb')
     
@@ -118,7 +119,7 @@ def parseENwikt():
     bulRE = re.compile("[bB]ulgarian", re.UNICODE)
     bulgarianSingle = re.compile("\* [bB]ulgarian", re.UNICODE)
     bulgarianSectionStart = re.compile("^==Bulgarian==$", re.UNICODE)
-    bulgarianSectionEnd = re.compile("^==[A-Za-z]+==$", re.UNICODE)
+    bulgarianSectionEnd = re.compile("^==[A-Za-z-]+==$", re.UNICODE)
     
     keep = False
     read = False
