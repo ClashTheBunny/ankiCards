@@ -2,7 +2,7 @@
 
 perl build_root_words.pl > a.tmp
 
-tr À-ß à-ÿ < a.tmp > b.tmp
+tr Ğ-Ğ¯ Ğ°-Ñ < a.tmp > b.tmp
 
 sort < b.tmp > a.tmp
 uniq < a.tmp > b.tmp

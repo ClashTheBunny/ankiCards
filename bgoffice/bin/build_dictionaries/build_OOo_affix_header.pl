@@ -8,19 +8,19 @@ require "../lib/bgoffice_util_module.pm";
 if ($ARGV[0] eq "--help") {
 	print <<EOHelp;
 
-Този скрипт генерира заглавната (header) част на OpenOffice.org
-афикс файла (bg_BG.aff).
+РўРѕР·Рё СЃРєСЂРёРїС‚ РіРµРЅРµСЂРёСЂР° Р·Р°РіР»Р°РІРЅР°С‚Р° (header) С‡Р°СЃС‚ РЅР° OpenOffice.org
+Р°С„РёРєСЃ С„Р°Р№Р»Р° (bg_BG.aff).
 
-Справка в спецификацията на OpenOffice.org:
+РЎРїСЂР°РІРєР° РІ СЃРїРµС†РёС„РёРєР°С†РёСЏС‚Р° РЅР° OpenOffice.org:
 The second line specifies the characters to be used in building
 suggestions for misspelled words. The should be listed in order
 or character frequency (highest to lowest). A good way to
 develop this string is to sort a simple character count of the
 wordlist.
 
-Т.е. скрипта брои честотата на използване на буквите. След това
-ги отпечатва според честотата на използване, като най-често
-срещаните букви се печатат първи.
+Рў.Рµ. СЃРєСЂРёРїС‚Р° Р±СЂРѕРё С‡РµСЃС‚РѕС‚Р°С‚Р° РЅР° РёР·РїРѕР»Р·РІР°РЅРµ РЅР° Р±СѓРєРІРёС‚Рµ. РЎР»РµРґ С‚РѕРІР°
+РіРё РѕС‚РїРµС‡Р°С‚РІР° СЃРїРѕСЂРµРґ С‡РµСЃС‚РѕС‚Р°С‚Р° РЅР° РёР·РїРѕР»Р·РІР°РЅРµ, РєР°С‚Рѕ РЅР°Р№-С‡РµСЃС‚Рѕ
+СЃСЂРµС‰Р°РЅРёС‚Рµ Р±СѓРєРІРё СЃРµ РїРµС‡Р°С‚Р°С‚ РїСЉСЂРІРё.
 
 EOHelp
 
@@ -38,13 +38,13 @@ while ($file_name = next_file($file_name)) {
 		my $l = length($_);
 		for (my $i = 0; $i < length($_); $i++) {
 			my $c = substr($_, $i, 1);
-			if (($c ge "а") && ($c le "я")) {
-				$t[ord($c) - ord("а")]++;
-			} elsif (($c ge "А") && ($c le "Я")) {
-				$t[ord($c) - ord("А")]++;
+			if (($c ge "Р°") && ($c le "СЏ")) {
+				$t[ord($c) - ord("Р°")]++;
+			} elsif (($c ge "Рђ") && ($c le "РЇ")) {
+				$t[ord($c) - ord("Рђ")]++;
 			} else {
-				print "Грешка в $file_name елемент <$_>.\n"
-				    . "Секцията <Думи> съдържа елемент, който съдържа букви извън интервала А-я.\n";
+				print "Р“СЂРµС€РєР° РІ $file_name РµР»РµРјРµРЅС‚ <$_>.\n"
+				    . "РЎРµРєС†РёСЏС‚Р° <Р”СѓРјРё> СЃСЉРґСЉСЂР¶Р° РµР»РµРјРµРЅС‚, РєРѕР№С‚Рѕ СЃСЉРґСЉСЂР¶Р° Р±СѓРєРІРё РёР·РІСЉРЅ РёРЅС‚РµСЂРІР°Р»Р° Рђ-СЏ.\n";
 	   			die;
 			}
 		}
@@ -72,8 +72,8 @@ for (my $i = 0; $i <= $#t; $i++) {
 	$max = $curmax;
 	for (my $j = 0; $j <= $#t; $j++) {
 		if (($curmax == $t[$j]) && ($curmax > 0)) {
-			$lo_case .= chr(ord("а") + $j);
-			$up_case .= chr(ord("А") + $j);
+			$lo_case .= chr(ord("Р°") + $j);
+			$up_case .= chr(ord("Рђ") + $j);
 		}
 	}
 	$tt += $t[$i];
