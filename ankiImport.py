@@ -3,10 +3,14 @@
 #from anki import Collection
 #col = Collection("/path/to/collection.anki2")
 
-from libanki.anki.importing import TextImporter
+import os, sys
+sys.path.append(os.path.join(os.path.dirname( os.path.realpath( __file__ )),"libanki") )
+
+from anki.importing import TextImporter
 import tempfile, os
-from libanki.anki import Collection as aopen
-from libanki.anki.utils import isMac, isWin
+from anki import Collection as aopen
+from anki.utils import isMac, isWin
+
 
 def _defaultBase():
     if isWin:
