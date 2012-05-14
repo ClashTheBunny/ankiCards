@@ -41,7 +41,7 @@ def createChapterFile(filename,freqDict):
     if os.path.dirname(filename):
         if not os.path.isdir(os.path.dirname(filename)):
             os.mkdir(os.path.dirname(filename))
-    csvWriter = csv.writer(open(filename + '.csv', 'wb'))
+    csvWriter = csv.writer(open(filename, 'wb'))
 
     for tup in sorted(sorted(freqDict.items(), key=lambda x: x[0].encode('utf-8')), key=lambda x: x[1], reverse=True):
         key = tup[0].encode('utf-8')

@@ -9,6 +9,7 @@ import xml.dom.minidom
 import BeautifulSoup
 from pprint import pprint
 from itertools import chain
+from ankiImport import import_csv
 
 debug = False
 
@@ -46,4 +47,5 @@ for chapter in opsDom.getElementsByTagName("spine")[0].getElementsByTagName("ite
     #print freqency.keys()
     allWords = list(set(list(chain.from_iterable([ allWords, freqency.keys()]))))
     # pprint(allWords)
-    wordList.createChapterFile(filename + ".cards/{:02d} - ".format(section) + chapterFilename, freqency)
+    wordList.createChapterFile(filename + ".cards/{:02d} - ".format(section) + chapterFilename + '.csv', freqency)
+    import_csv(filename + ".cards/{:02d} - ".format(section) + chapterFilename + '.csv', "Bulgarian", chapterFilename, "{:02d}".format(section))
