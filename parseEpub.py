@@ -9,7 +9,8 @@ import xml.dom.minidom
 import BeautifulSoup
 from pprint import pprint
 from itertools import chain
-from ankiImport import import_csv
+import ankiImport
+
 
 debug = False
 
@@ -22,6 +23,10 @@ if debug:
         ipshell = embed
 
 filename = sys.argv[1]
+
+if not os.path.isabs( filename ):
+    filename = os.path.abspath( filename )
+
 epub = zipfile.ZipFile(filename)
 
 metaDom = xml.dom.minidom.parseString(epub.open("META-INF/container.xml").read())
@@ -48,4 +53,4 @@ for chapter in opsDom.getElementsByTagName("spine")[0].getElementsByTagName("ite
     allWords = list(set(list(chain.from_iterable([ allWords, freqency.keys()]))))
     # pprint(allWords)
     wordList.createChapterFile(filename + ".cards/{:02d} - ".format(section) + chapterFilename + '.csv', freqency)
-    import_csv(filename + ".cards/{:02d} - ".format(section) + chapterFilename + '.csv', "Bulgarian", chapterFilename, "{:02d}".format(section))
+    ankiImport.import_csv(filename + ".cards/{:02d} - ".format(section) + chapterFilename + '.csv', "BG", "Harry Potter and the Philosopher's Stone", "Chapter {:02d}".format(section) )
