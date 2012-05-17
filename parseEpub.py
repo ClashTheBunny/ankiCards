@@ -12,7 +12,7 @@ from itertools import chain
 import ankiImport
 
 
-debug = False
+debug = True
 
 if debug:
     try:
@@ -38,6 +38,19 @@ def epub2csv(filename):
     section = 0
     
     allWords = []
+
+    try:
+        if opsDom.getElementsByTagName("metadata")[0].getElementsByTagName("dc:title"):
+            title = opsDom.getElementsByTagName("metadata")[0].getElementsByTagName("dc:title")[0].childNodes[0].data
+        else:
+            title = os.path.basename(filename)
+        if opsDom.getElementsByTagName("metadata")[0].getElementsByTagName("dc:language"):
+            language = opsDom.getElementsByTagName("metadata")[0].getElementsByTagName("dc:language")[0].childNodes[0].data
+        else:
+            language = "BG"
+    except:
+        ipshell()
+
     
     for chapter in opsDom.getElementsByTagName("spine")[0].getElementsByTagName("itemref"):
         section = section + 1
@@ -53,7 +66,7 @@ def epub2csv(filename):
         allWords = list(set(list(chain.from_iterable([ allWords, freqency.keys()]))))
         # pprint(allWords)
         wordList.createChapterFile(filename + ".cards/{:02d} - ".format(section) + chapterFilename + '.csv', freqency)
-        ankiImport.import_csv(filename + ".cards/{:02d} - ".format(section) + chapterFilename + '.csv', "BG", os.path.basename(filename), "{:02d}".format(section) + chapterFilename)
+        ankiImport.import_csv(filename + ".cards/{:02d} - ".format(section) + chapterFilename + '.csv', language, title, "{:02d}".format(section) + chapterFilename)
 
 if __name__ == '__main__':
     for filename in sys.argv[1:]:
