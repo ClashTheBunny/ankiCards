@@ -5,12 +5,16 @@
 
 import os, sys
 sys.path.append(os.path.join(os.path.dirname( os.path.realpath( __file__ )),"libanki") )
+sys.path.append(os.path.join(os.path.dirname( os.path.realpath( __file__ )),"ankiqt") )
 
 from anki.importing import TextImporter
 import tempfile, os
-from anki import Collection as aopen
+try:
+    from aqt import mw
+    Collection = mw.col
+except:
+    from anki import Collection
 from anki.utils import isMac, isWin
-
 
 def _defaultBase():
     if isWin:
@@ -26,7 +30,7 @@ def _defaultBase():
 def getEmptyDeck(**kwargs):
     (fd, nam) = tempfile.mkstemp(suffix=".anki2")
     os.unlink(nam)
-    return aopen(os.path.join(_defaultBase(),"User 1", "collection.anki2"), **kwargs)
+    return Collection(os.path.join(_defaultBase(),"User 1", "collection.anki2"), **kwargs)
 
 def import_csv(csvFile, lang, book, chapter):
     deck = getEmptyDeck()
