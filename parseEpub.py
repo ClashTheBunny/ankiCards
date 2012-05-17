@@ -22,10 +22,6 @@ if debug:
         from IPython import embed
         ipshell = embed
 
-if __name__ == '__main__':
-    for filename in sys.argv[1:]:
-        epub2csv(filename)
-
 def epub2csv(filename):
 
     if not os.path.isabs( filename ):
@@ -58,3 +54,7 @@ def epub2csv(filename):
         # pprint(allWords)
         wordList.createChapterFile(filename + ".cards/{:02d} - ".format(section) + chapterFilename + '.csv', freqency)
         ankiImport.import_csv(filename + ".cards/{:02d} - ".format(section) + chapterFilename + '.csv', "BG", os.path.basename(filename), "{:02d}".format(section) + chapterFilename)
+
+if __name__ == '__main__':
+    for filename in sys.argv[1:]:
+        epub2csv(filename)
