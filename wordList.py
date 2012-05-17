@@ -50,8 +50,6 @@ def createChapterFile(filename,freqDict):
         csvWriter.writerow([key , value])
 
 def bgen(word):
-    if bg_enWikt.has_key(word):
-        return bg_enWikt[word]
     if bg_en.has_key(word):
         return bg_en[word].encode('utf-8')
     if bg_enWikt.has_key(word + u' се'):
@@ -60,6 +58,8 @@ def bgen(word):
         return bg_en[word + u' се'].encode('utf-8')
     if bg_bg.has_key(word):
         return bg_bg[word].encode('utf-8') + u': '.encode('utf-8') + bgen(bg_bg[word])
+    if bg_enWikt.has_key(word):
+        return bg_enWikt[word]
     if bg_type.has_key(word):
         result = u'Unknown word, word type: '
         result += u', '.join([ x for x in bg_types[bg_type[word]] if x is not ''])

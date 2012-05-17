@@ -28,4 +28,4 @@ for chapter in zip(chapBoundry.split(text)[1::2], chapBoundry.split(text)[2::2])
     # TODO: Fix capitals for names
     allWords = list(set(list(chain.from_iterable([ allWords, freqency.keys()]))))
     wordList.createChapterFile(filename + "{:02d}.csv".format(int(chapter[0])), freqency)
-    ankiImport.import_csv(filename + "{:02d}.csv".format(int(chapter[0])),"BG", filename, "{:02d}".format(int(chapter[0])))
+    ankiImport.import_csv(filename + "{:02d}.csv".format(int(chapter[0])),"BG", os.path.basename(filename), "{:02d}".format(int(chapter[0])))

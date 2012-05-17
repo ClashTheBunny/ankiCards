@@ -53,4 +53,4 @@ for chapter in opsDom.getElementsByTagName("spine")[0].getElementsByTagName("ite
     allWords = list(set(list(chain.from_iterable([ allWords, freqency.keys()]))))
     # pprint(allWords)
     wordList.createChapterFile(filename + ".cards/{:02d} - ".format(section) + chapterFilename + '.csv', freqency)
-    ankiImport.import_csv(filename + ".cards/{:02d} - ".format(section) + chapterFilename + '.csv', "BG", "Harry Potter and the Philosopher's Stone", "Chapter {:02d}".format(section) )
+    ankiImport.import_csv(filename + ".cards/{:02d} - ".format(section) + chapterFilename + '.csv', "BG", os.path.basename(filename), "{:02d}".format(section) + chapterFilename)
