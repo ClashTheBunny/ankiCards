@@ -9,6 +9,8 @@ sys.path.append(os.path.join(os.path.dirname( os.path.realpath( __file__ )),"ank
 
 from anki.importing import TextImporter
 import tempfile, os
+import pysqlite2
+
 try:
     from aqt import mw
     Collection = mw.col
@@ -33,13 +35,16 @@ def getEmptyDeck(**kwargs):
     return Collection(os.path.join(_defaultBase(),"User 1", "collection.anki2"), **kwargs)
 
 def import_csv(csvFile, lang, book, chapter):
-    deck = getEmptyDeck()
+    try:
+        deck = getEmptyDeck()
+    except pysqlite2.dbapi2.OperationalError as e:
+        print e, "you probably have Anki open while you are running this; run this as a plugin from within Anki or close Anki and run this."
+        sys.exit(1)
     m = deck.models.byName("Basic")
     deck.models.setCurrent(m)
     # set 'Import' as the target deck
     m['did'] = deck.decks.id(lang + "::" + book + "::" + chapter)
     deck.models.save(m)
-    print csvFile
     i = TextImporter(deck, csvFile)
     i.initMapping()
     i.run()
