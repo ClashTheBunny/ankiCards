@@ -9,6 +9,7 @@ sys.path.append(os.path.join(os.path.dirname( os.path.realpath( __file__ )),"lib
 from anki.importing import TextImporter
 import tempfile, os
 import pysqlite2
+import parseDoc
 
 try:
     from aqt import mw
@@ -50,5 +51,13 @@ def import_csv(csvFile, lang, book, chapter):
     deck.save()
     deck.close()
 
-if __name__ == "__main__":
-    import_csv('/home/rmason/CalibreLibrary/Dzhoan Roulingh/Khari Potr i filosofskiiat kamk (17193)/Khari Potr i filosofskiiat kamk - Dzhoan Roulingh.epub.cards/03 - chapter-0.xhtml.csv', 'Bulgarian', 'Harry Potter and the Filosopher\'s stone', 'Chapter 1')
+if __name__ == '__main__':
+    for filename in sys.argv[1:]:
+        if filename.lower().endswith(".epub"):
+            files = parseDoc.epub2csv(filename)
+        elif filename.lower().endswith(".txt"):
+            files = parseDoc.txt2csv(filename, u'Глава (\d+)')
+        else:
+            print "I don't think I know how to parse " + filename + " yet."
+        for filetupple in files:
+            import_csv(filetupple[0], filetupple[1], filetupple[2], filetupple[3] )
