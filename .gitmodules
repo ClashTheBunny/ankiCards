@@ -1,6 +1,3 @@
 [submodule "libanki"]
 	path = libanki
 	url = git://github.com/dae/libanki.git
-[submodule "ankiqt"]
-	path = ankiqt
-	url = git://github.com/dae/ankiqt.git
