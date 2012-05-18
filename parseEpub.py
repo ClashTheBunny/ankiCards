@@ -51,12 +51,26 @@ def epub2csv(filename):
     except:
         ipshell()
 
-    
+    ncxFile = None
+
+    for element in opsDom.getElementsByTagName("manifest")[0].getElementsByTagName("item"):
+        if element.getAttribute("id") == "ncx":
+            ncxFile = element.getAttribute("href")
+            break
+    if ncxFile:
+        ncxDom = xml.dom.minidom.parseString(epub.open(os.path.join(os.path.dirname(opsFile),ncxFile)).read())
+
+    fileList = []
+
     for chapter in opsDom.getElementsByTagName("spine")[0].getElementsByTagName("itemref"):
         section = section + 1
         for element in opsDom.getElementsByTagName("manifest")[0].getElementsByTagName("item"):
             if element.getAttribute("id") == chapter.getAttributeNode("idref").value:
                 chapterFilename = element.getAttribute("href")
+        if ncxFile:
+            for element in ncxDom.getElementsByTagName("navMap")[0].getElementsByTagName("navPoint"):
+                if element.getElementsByTagName("content")[0].getAttribute("src") == chapterFilename:
+                    chapterName = element.getElementsByTagName("navLabel")[0].getElementsByTagName("text")[0].childNodes[0].data
         chapterText = epub.open(os.path.join(os.path.dirname(opsFile),chapterFilename)).read()
         soup = BeautifulSoup.BeautifulSoup(chapterText)
         body_text = ''.join(soup.body(text=True))
@@ -66,8 +80,11 @@ def epub2csv(filename):
         allWords = list(set(list(chain.from_iterable([ allWords, freqency.keys()]))))
         # pprint(allWords)
         wordList.createChapterFile(filename + ".cards/{:02d} - ".format(section) + chapterFilename + '.csv', freqency)
-        ankiImport.import_csv(filename + ".cards/{:02d} - ".format(section) + chapterFilename + '.csv', language, title, "{:02d}".format(section) + chapterFilename)
+        fileList.append((filename + ".cards/{:02d} - ".format(section) + chapterFilename + '.csv', language, title, "{:02d} - ".format(section) + chapterName ))
+    return fileList
 
 if __name__ == '__main__':
     for filename in sys.argv[1:]:
-        epub2csv(filename)
+        files = epub2csv(filename)
+        for filetupple in files:
+            ankiImport.import_csv(filetupple[0], filetupple[1], filetupple[2], filetupple[3] )
