@@ -2,17 +2,16 @@
 # -*- coding: utf-8 -*-
 
 import wordList
-#import string
 import os, sys
 import zipfile
 import xml.dom.minidom
 import BeautifulSoup
-from pprint import pprint
 from itertools import chain
 import ankiImport
+import codecs
+import re
 
-
-debug = True
+debug = False
 
 if debug:
     try:
@@ -21,6 +20,28 @@ if debug:
     except:
         from IPython import embed
         ipshell = embed
+
+def txt2csv(filename, chapRegEx):
+    if not os.path.isabs( filename ):
+        filename = os.path.abspath( filename )
+    
+    f = codecs.open(filename, 'r', 'utf-8')
+    
+    text = f.read()
+    
+    chapBoundry = re.compile(chapRegEx,re.UNICODE)
+    
+    allWords = ['',]
+
+    fileList = []
+    
+    for chapter in zip(chapBoundry.split(text)[1::2], chapBoundry.split(text)[2::2]):
+        freqency = wordList.makeFreqFromText(chapter[1],allWords)
+        # TODO: Fix capitals for names
+        allWords = list(set(list(chain.from_iterable([ allWords, freqency.keys()]))))
+        wordList.createChapterFile(filename + "{:02d}.csv".format(int(chapter[0])), freqency)
+        fileList.append((filename + "{:02d}.csv".format(int(chapter[0])), "BG", os.path.basename(filename), "{:02d}".format(int(chapter[0]))))
+    return fileList
 
 def epub2csv(filename):
 
@@ -85,6 +106,11 @@ def epub2csv(filename):
 
 if __name__ == '__main__':
     for filename in sys.argv[1:]:
-        files = epub2csv(filename)
+        if filename.lower().endswith(".epub"):
+            files = epub2csv(filename)
+        elif filename.lower().endswith(".txt"):
+            files = txt2csv(filename, u'Глава (\d+)')
+        else:
+            print "I don't think I know how to parse " + filename + " yet."
         for filetupple in files:
             ankiImport.import_csv(filetupple[0], filetupple[1], filetupple[2], filetupple[3] )
