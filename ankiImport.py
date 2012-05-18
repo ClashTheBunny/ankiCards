@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 #from anki import Collection
 #col = Collection("/path/to/collection.anki2")
