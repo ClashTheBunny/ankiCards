@@ -9,7 +9,7 @@ def parse(dat):
     formiRE = re.compile("^Форми:$")
     testRE = re.compile("^Тест:$")
     blankRE = re.compile("^$")
-    desc = ( os.path.split(dat)[0], u'description.dat')
+    desc = (os.path.split(dat)[0], u'description.dat')
     datfh = open(dat, 'rb')
     descfh = open(os.path.join(*desc), 'rb')
     for fh in (descfh, datfh):
