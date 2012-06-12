@@ -2,3 +2,4 @@ eclipse.preferences.version=1
 encoding/parseBGoffice.py=utf-8
 encoding/ankiImport.py=utf-8
 encoding/wiktionaryGet.py=utf-8
+encoding/parseWikt.py=utf-8
