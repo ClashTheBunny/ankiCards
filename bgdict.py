@@ -21,19 +21,19 @@ def buildDicts():
 
     filename = 'bgWiktBG.pickle.bz2'
     wiktfile = 'bgwiktionary-latest-pages-meta-current.xml.bz2'
-    if ( not os.path.isfile(os.path.join(dirname, filename))
-        or ( os.path.getctime(os.path.join(dirname, filename)) <
-            os.path.getctime(os.path.join(dirname, wiktfile)) ) ):
+    if (not os.path.isfile(os.path.join(dirname, filename))
+        or (os.path.getctime(os.path.join(dirname, filename)) <
+            os.path.getctime(os.path.join(dirname, wiktfile)))):
         parseWikt.parseBGwikt()
     f = bz2.BZ2File(os.path.join(dirname, filename), 'rb')
-    (bg_bg, bg_type, bg_types ) = pickle.load(f)
+    (bg_bg, bg_type, bg_types) = pickle.load(f)
     f.close()
 
     filename = 'enWiktBG.pickle.bz2'
     wiktfile = 'enwiktionary-latest-pages-meta-current.xml.bz2'
-    if ( not os.path.isfile(os.path.join(dirname, filename))
-        or ( os.path.getctime(os.path.join(dirname, filename)) <
-            os.path.getctime(os.path.join(dirname, wiktfile)) ) ):
+    if (not os.path.isfile(os.path.join(dirname, filename))
+        or (os.path.getctime(os.path.join(dirname, filename)) <
+            os.path.getctime(os.path.join(dirname, wiktfile)))):
         parseWikt.parseENwikt()
     f = bz2.BZ2File(os.path.join(dirname, filename), 'rb')
     (bg_enWikt, en_bgWikt) = pickle.load(f)
@@ -70,7 +70,7 @@ def buildDicts():
         if not en_bgWikt.has_key(lines[0]):
             en_bg[lines[0]] = '<br>'.join(lines[1:])
 
-    return (bg_en,en_bg,bg_bg,bg_enWikt, en_bgWikt, bg_type, bg_types)
+    return (bg_en, en_bg, bg_bg, bg_enWikt, en_bgWikt, bg_type, bg_types)
 
 if __name__ == '__main__':
     dicts = buildDicts()

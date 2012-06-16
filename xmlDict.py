@@ -35,7 +35,7 @@ class XmlDictConfig(dict):
         childrenNames = []
         for child in parent_element.getchildren():
             childrenNames.append(child.tag)
-    
+
         if parent_element.items(): #attributes
             self.update(dict(parent_element.items()))
         for element in parent_element:
@@ -55,7 +55,7 @@ class XmlDictConfig(dict):
                 # if the tag has attributes, add those to the dict
                 if element.items():
                     aDict.update(dict(element.items()))
-    
+
                 if childrenNames.count(element.tag) > 1:
                     try:
                         currentValue = self[element.tag]
@@ -63,7 +63,7 @@ class XmlDictConfig(dict):
                         self.update({element.tag: currentValue})
                     except: #the first of its kind, an empty list must be created
                         self.update({element.tag: [aDict]}) #aDict is written in [], i.e. it will be a list
-    
+
                 else:
                      self.update({element.tag: aDict})
             # this assumes that if you've got an attribute in a tag,

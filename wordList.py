@@ -17,10 +17,10 @@ if debug:
         from IPython import embed
         ipshell = embed
 
-(bg_en,en_bg,bg_bg,bg_enWikt, en_bgWikt, bg_type, bg_types) = bgdict.buildDicts()
+(bg_en, en_bg, bg_bg, bg_enWikt, en_bgWikt, bg_type, bg_types) = bgdict.buildDicts()
 
 def makeFreqFromText(text, usedWords):
-    wordBoundry = re.compile('\W+',re.UNICODE)
+    wordBoundry = re.compile('\W+', re.UNICODE)
 
     freqDict = {}
     # TODO: Fix capitals for names
@@ -37,13 +37,13 @@ def makeFreqFromText(text, usedWords):
         del freqDict[common]
     return freqDict
 
-def createChapterFile(filename,freqDict):
+def createChapterFile(filename, freqDict):
     if os.path.dirname(filename):
         if not os.path.isdir(os.path.dirname(filename)):
             os.mkdir(os.path.dirname(filename))
     csvWriter = csv.writer(open(filename, 'wb'))
 
-    for tup in sorted(sorted(freqDict.items(), key=lambda x: x[0].encode('utf-8')), key=lambda x: x[1], reverse=True):
+    for tup in sorted(sorted(freqDict.items(), key = lambda x: x[0].encode('utf-8')), key = lambda x: x[1], reverse = True):
         key = tup[0].encode('utf-8')
         value = bgen(tup[0])
         #value = lookupWord(tup[0])

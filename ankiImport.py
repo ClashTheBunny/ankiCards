@@ -5,7 +5,7 @@
 #col = Collection("/path/to/collection.anki2")
 
 import os, sys
-sys.path.append(os.path.join(os.path.dirname( os.path.realpath( __file__ )),"libanki") )
+sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), "libanki"))
 
 from anki.importing import TextImporter
 import tempfile, os
@@ -31,9 +31,9 @@ def _defaultBase():
         return os.path.expanduser("~/Anki")
 
 def getEmptyDeck(**kwargs):
-    (fd, nam) = tempfile.mkstemp(suffix=".anki2")
+    (fd, nam) = tempfile.mkstemp(suffix = ".anki2")
     os.unlink(nam)
-    return Collection(os.path.join(_defaultBase(),"User 1", "collection.anki2"), **kwargs)
+    return Collection(os.path.join(_defaultBase(), "User 1", "collection.anki2"), **kwargs)
 
 def import_csv(csvFile, lang, book, chapter):
     try:
@@ -61,4 +61,4 @@ if __name__ == '__main__':
         else:
             print "I don't think I know how to parse " + filename + " yet."
         for filetupple in files:
-            import_csv(filetupple[0], filetupple[1], filetupple[2], filetupple[3] )
+            import_csv(filetupple[0], filetupple[1], filetupple[2], filetupple[3])

@@ -22,21 +22,21 @@ if debug:
         ipshell = embed
 
 def txt2csv(filename, chapRegEx):
-    if not os.path.isabs( filename ):
-        filename = os.path.abspath( filename )
-    
+    if not os.path.isabs(filename):
+        filename = os.path.abspath(filename)
+
     f = codecs.open(filename, 'r', 'utf-8')
-    
+
     text = f.read()
-    
-    chapBoundry = re.compile(chapRegEx,re.UNICODE)
-    
-    allWords = ['',]
+
+    chapBoundry = re.compile(chapRegEx, re.UNICODE)
+
+    allWords = ['', ]
 
     fileList = []
-    
+
     for chapter in zip(chapBoundry.split(text)[1::2], chapBoundry.split(text)[2::2]):
-        freqency = wordList.makeFreqFromText(chapter[1],allWords)
+        freqency = wordList.makeFreqFromText(chapter[1], allWords)
         # TODO: Fix capitals for names
         allWords = list(set(list(chain.from_iterable([ allWords, freqency.keys()]))))
         wordList.createChapterFile(filename + "{:02d}.csv".format(int(chapter[0])), freqency)
@@ -45,19 +45,19 @@ def txt2csv(filename, chapRegEx):
 
 def epub2csv(filename):
 
-    if not os.path.isabs( filename ):
-        filename = os.path.abspath( filename )
-    
+    if not os.path.isabs(filename):
+        filename = os.path.abspath(filename)
+
     epub = zipfile.ZipFile(filename)
-    
+
     metaDom = xml.dom.minidom.parseString(epub.open("META-INF/container.xml").read())
-    
+
     opsFile = metaDom.getElementsByTagName("rootfile")[0].getAttributeNode("full-path").value
-    
+
     opsDom = xml.dom.minidom.parseString(epub.open(opsFile).read())
-    
+
     section = 0
-    
+
     allWords = []
 
     try:
@@ -79,7 +79,7 @@ def epub2csv(filename):
             ncxFile = element.getAttribute("href")
             break
     if ncxFile:
-        ncxDom = xml.dom.minidom.parseString(epub.open(os.path.join(os.path.dirname(opsFile),ncxFile)).read())
+        ncxDom = xml.dom.minidom.parseString(epub.open(os.path.join(os.path.dirname(opsFile), ncxFile)).read())
 
     fileList = []
 
@@ -92,16 +92,16 @@ def epub2csv(filename):
             for element in ncxDom.getElementsByTagName("navMap")[0].getElementsByTagName("navPoint"):
                 if element.getElementsByTagName("content")[0].getAttribute("src") == chapterFilename:
                     chapterName = element.getElementsByTagName("navLabel")[0].getElementsByTagName("text")[0].childNodes[0].data
-        chapterText = epub.open(os.path.join(os.path.dirname(opsFile),chapterFilename)).read()
+        chapterText = epub.open(os.path.join(os.path.dirname(opsFile), chapterFilename)).read()
         soup = BeautifulSoup.BeautifulSoup(chapterText)
-        body_text = ''.join(soup.body(text=True))
-        freqency = wordList.makeFreqFromText(body_text,allWords)
+        body_text = ''.join(soup.body(text = True))
+        freqency = wordList.makeFreqFromText(body_text, allWords)
         #print allWords
         #print freqency.keys()
         allWords = list(set(list(chain.from_iterable([ allWords, freqency.keys()]))))
         # pprint(allWords)
         wordList.createChapterFile(filename + ".cards/{:02d} - ".format(section) + chapterFilename + '.csv', freqency)
-        fileList.append((filename + ".cards/{:02d} - ".format(section) + chapterFilename + '.csv', language, title, "{:02d} - ".format(section) + chapterName ))
+        fileList.append((filename + ".cards/{:02d} - ".format(section) + chapterFilename + '.csv', language, title, "{:02d} - ".format(section) + chapterName))
     return fileList
 
 if __name__ == '__main__':
@@ -113,4 +113,4 @@ if __name__ == '__main__':
         else:
             print "I don't think I know how to parse " + filename + " yet."
         for filetupple in files:
-            ankiImport.import_csv(filetupple[0], filetupple[1], filetupple[2], filetupple[3] )
+            ankiImport.import_csv(filetupple[0], filetupple[1], filetupple[2], filetupple[3])
