@@ -177,5 +177,5 @@ def parseENwikt():
     enWiktBG.close()
 
 if __name__ == '__main__':
-    #parseENwikt()
+    parseENwikt()
     parseBGwikt()
