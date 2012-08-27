@@ -7,3 +7,6 @@ the word in the book and the second word being the word's entry in a Bulgarian-
 English Dictionary.
 
 It currently requires python and mwlib.xhtml.
+
+I haven't decided on the final license for this, so everything that is mine is
+released under an Apache 2.0 lincense for now.  See LICENSE.txt
