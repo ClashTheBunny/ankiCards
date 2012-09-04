@@ -4,7 +4,10 @@
 import codecs
 import cPickle as pickle
 import sys, os, bz2
-import parseWikt
+try:
+    import parseWikt
+except:
+    pass
 import re
 
 debug = True
@@ -24,7 +27,11 @@ def buildDicts():
     if (not os.path.isfile(os.path.join(dirname, filename))
         or (os.path.getctime(os.path.join(dirname, filename)) <
             os.path.getctime(os.path.join(dirname, wiktfile)))):
-        parseWikt.parseBGwikt()
+        try:
+            parseWikt.parseBGwikt()
+        except:
+            print "Please download " + filename + " from somewhere else."
+            sys.exit( 1 )
     f = bz2.BZ2File(os.path.join(dirname, filename), 'rb')
     (bg_bg, bg_type, bg_types) = pickle.load(f)
     f.close()
@@ -34,7 +41,11 @@ def buildDicts():
     if (not os.path.isfile(os.path.join(dirname, filename))
         or (os.path.getctime(os.path.join(dirname, filename)) <
             os.path.getctime(os.path.join(dirname, wiktfile)))):
-        parseWikt.parseENwikt()
+        try:
+            parseWikt.parseENwikt()
+        except:
+            print "Please download " + filename + " from somewhere else."
+            sys.exit( 1 )
     f = bz2.BZ2File(os.path.join(dirname, filename), 'rb')
     (bg_enWikt, en_bgWikt) = pickle.load(f)
     f.close()
